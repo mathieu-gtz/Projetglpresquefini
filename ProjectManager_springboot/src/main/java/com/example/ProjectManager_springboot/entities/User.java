@@ -1,10 +1,8 @@
 package com.example.ProjectManager_springboot.entities;
 
+import com.example.ProjectManager_springboot.dto.UserDto;
 import com.example.ProjectManager_springboot.enums.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -29,6 +28,9 @@ public class User implements UserDetails {
     private String password;
 
     private UserRole userRole;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserProject> userProjects;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -60,12 +62,12 @@ public class User implements UserDetails {
         return true;
     }
 
-//    public UserDto getUserDto() {
-//        UserDto userDto = new UserDto();
-//        userDto.setId(id);
-//        userDto.setName(name);
-//        userDto.setEmail(email);
-//        userDto.setUserRole(userRole);
-//        return userDto;
-//    }
+    public UserDto getUserDto() {
+        UserDto userDto = new UserDto();
+        userDto.setId(id);
+        userDto.setName(name);
+        userDto.setEmail(email);
+        userDto.setUserRole(userRole);
+        return userDto;
+    }
 }
